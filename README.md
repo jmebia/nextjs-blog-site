@@ -24,3 +24,7 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+The blog is can be seen at [http://localhost:3000](http://localhost:3000/blog).
+
+You can enter your blog posts using prisma studio. Just run `npx prisma studio` and edit your database rows from there.
