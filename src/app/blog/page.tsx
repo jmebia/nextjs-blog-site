@@ -1,39 +1,39 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Post } from "@prisma/client"; // Import your Post type if you have it
 import Link from "next/link";
 
-type Post = {
-  id: number;
-  title: string;
-  content: string;
-};
+export default function BlogPage() {
+  const [posts, setPosts] = useState<Post[]>([]);
 
-async function getPosts(): Promise<Post[]> {
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
-  const res = await fetch(`${apiUrl}/api/posts`);
-  return res.json();
-}
+  useEffect(() => {
+    async function fetchPosts() {
+      const res = await fetch("/api/posts");
+      const data = await res.json();
+      setPosts(data);
+    }
 
-export default async function BlogPage() {
-  const posts = await getPosts();
+    fetchPosts();
+  }, []);
 
   return (
-    <main className="max-w-4xl mx-auto py-10 px-4">
-      <h1 className="text-4xl font-bold mb-8 text-center">Blog</h1>
-
-      <div className="space-y-6">
-        {posts.map((post) => (
-          <div
-            key={post.id}
-            className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition"
-          >
+    <div className="max-w-3xl mx-auto p-4">
+      <h1 className="text-3xl font-bold mb-6">Blog Posts</h1>
+      {posts.length === 0 ? (
+        <p>No posts found.</p>
+      ) : (
+        posts.map((post) => (
+          <div key={post.id} className="mb-6">
             <Link href={`/blog/${post.id}`}>
-              <h2 className="text-2xl font-semibold text-blue-600 hover:underline">
-                {post.title}
-              </h2>
+              <h2 className="text-2xl font-semibold text-blue-600 hover:underline">{post.title}</h2>
             </Link>
-            <p className="mt-2 text-gray-600">{post.content}</p>
+            <p className="text-gray-500 text-sm">
+              {new Date(post.createdAt).toLocaleDateString()}
+            </p>
           </div>
-        ))}
-      </div>
-    </main>
+        ))
+      )}
+    </div>
   );
 }
