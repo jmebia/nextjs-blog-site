@@ -4,7 +4,7 @@ I will be using this for my personal website.
 
 ## Getting Started
 
-Run the following commands to get the projeect running:
+Run the following commands to get the project running:
 
 ```bash
 
